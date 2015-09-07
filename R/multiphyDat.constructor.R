@@ -15,9 +15,11 @@
 #' @aliases initialize,multiphyDat-methods new.multiphyDat
 #'
 #' @param .Object the object skeleton, automatically generated when calling \code{new}.
-#' @param dna a list of phyDat matrices (1 per gene); rows should be labelled and indicate individuals, but different individuals and different orders can be used in different matrices.
+#' @param seq a list of phyDat matrices (1 per gene); rows should be labelled and indicate individuals, but different individuals and different orders can be used in different matrices.
+#' @param type a character string indicating the type of the sequences stored: "DNA" for DNA sequences, "AA" for amino-acids.
 #' @param ind.info an optional data.frame containing information on the individuals, where individuals are in rows.
 #' @param gene.info an optional data.frame containing information on the genes, where genes are in rows.
+#' @param add.gaps a logical indicating if gap-only sequences should be used where sequences are missing; defaults to TRUE.
 #' @param quiet a logical indicating if messages should be shown; defaults to FALSE.
 #' @param ... further arguments to be passed to other methods
 #'
@@ -45,70 +47,53 @@
 #' x <- new("multiphyDat", genes)
 #' x
 #'
-setMethod("initialize", "multiphyDat", function(.Object, dna=NULL, ind.info=NULL, gene.info=NULL, quiet=FALSE, ...) {
+setMethod("initialize", "multiphyDat", function(.Object, seq=NULL, type=character(0), ind.info=NULL, gene.info=NULL, add.gaps=TRUE, quiet=FALSE, ...) {
 
     ## RETRIEVE PROTOTYPED OBJECT ##
     x <- .Object
 
 
     ## ESCAPE IF NO DATA ##
-    if(is.null(dna)) return(x)
+    if(is.null(seq)) return(x)
 
 
-    ## HANDLE DNA ##
+    ## HANDLE SEQ ##
     ## cases where an multiphyDat is provided ##
-    if(inherits(dna, "multiphyDat")){
-        ind.info <- dna@ind.info
-        gene.info <- dna@gene.info
-        dna <- dna@dna
-        dna@dna <- NULL
+    if(inherits(seq, "multiphyDat")){
+        ind.info <- seq@ind.info
+        gene.info <- seq@gene.info
+        seq <- seq@seq
+        seq@seq <- NULL
         invisible(gc())
     }
 
     ## cases where no info provided ##
-    if(is.null(dna)) return(x)
-    if(is.matrix(dna)) dna <- list(dna)
+    if(is.null(seq)) return(x)
+    if(is.matrix(seq)) seq <- list(seq)
 
-    ## coerce items in DNA to matrices ##
-    # dna <- lapply(dna, as.matrix)
+    ## coerce items in SEQ to matrices ##
+    # seq <- lapply(seq, as.matrix)
     fun <- function(x)ifelse(is.matrix(x),nrow(x),length(x))
-    N.SEQ <- sum(sapply(dna, fun))
+    N.SEQ <- sum(sapply(seq, fun))
     if(N.SEQ==0){
-        x@dna <- NULL
+        x@seq <- NULL
         x@ind.info <- x@gene.info <- NULL
         return(x)
     }
 
     ## convert matrices of characters into phyDat ##
-    N.GENES <- length(dna)  
+    N.GENES <- length(seq)
     for(i in 1:N.GENES){
-        if(is.character(dna[[i]])) dna[[i]] <- phyDat(dna[[i]])
+        if(is.character(seq[[i]])) seq[[i]] <- phyDat(seq[[i]])
     }
 
     ## replace with generic names if needed ##
-    if(is.null(names(dna))) names(dna) <- paste("gene", 1:N.GENES, sep=".")
+    if(is.null(names(seq))) names(seq) <- paste("gene", 1:N.GENES, sep=".")
 
-
-    ## AUXILIARY FUNCTIONS ##
-
-    ## HANDLE LABELS ##
-    ## handle missing labels ##
-#    missing.labels <- any(sapply(dna, function(e) is.null(labels(e))))
-#    if(missing.labels){
-#        if(!quiet) message("[multiphyDat constructor] missing/incomplete labels provided - using generic labels.\n")
-        ## error if varying numbers of rows
-#        if(length(unique(sapply(a, nrow)))>1) stop("[multiphyDat constructor] no labels provided and varying number of sequences across genes - cannot assume individuals are identical.")
-#        labels <- paste("individual", 1:nrow(dna[[1]]), sep=".")
-#        for(i in 1:N.GENES) rownames(dna[[i]]) <- labels
-#    }
 
     ## get list of all labels ##
-    all.labels <- unique(unlist(lapply(dna, names)))
+    all.labels <- unique(unlist(lapply(seq, names)))
     N.IND <- length(all.labels)
-
-
-    ## COMPLETE/SORT MATRICES OF DNA ##
-#    dna <- lapply(dna, form.dna.matrix, all.labels)
 
 
     ## PROCESS META INFO ##
@@ -125,13 +110,18 @@ setMethod("initialize", "multiphyDat", function(.Object, dna=NULL, ind.info=NULL
     }
 
 
-    ## FORM FINAL OUTPUT ##
-    x@dna <- dna
+     ## FORM FINAL OUTPUT ##
+    x@seq <- seq
+    x@type <- as.character(type)
     x@labels <- all.labels
     x@n.ind <- N.IND
-    x@n.seq <- N.SEQ
+    x@n.seq <- as.integer(sum(sapply(x@seq, length)))
     x@ind.info <- ind.info
     x@gene.info <- gene.info
+
+    ## ADD GAPS-ONLY SEQUENCES IF NEEDED ##
+    if(add.gaps) x <- add.gaps(x)
+    x@n.seq.miss <- .nMissingSequences(x@seq)
 
     return(x)
 }) # end multiphyDat constructor

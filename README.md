@@ -4,6 +4,8 @@
 
 
 
+
+
 *apex*: Phylogenetic Methods for Multiple Gene Data
 =================================================
 *apex* implements new classes and methods for analysing DNA sequences from multiple genes.
@@ -30,6 +32,11 @@ Then, to load the package, use:
 
 ```r
 library("apex")
+```
+
+```
+## Loading required package: ape
+## Loading required package: phangorn
 ```
 
 
@@ -59,6 +66,8 @@ getClassDef("multidna")
 ##                                                          
 ## Name:        n.seq.miss         ind.info        gene.info
 ## Class:          integer data.frameOrNULL data.frameOrNULL
+## 
+## Extends: "multiinfo"
 ```
 * **@dna**: list of `DNAbin` matrices, each corresponding to a given gene/locus, with matching rows (individuals)
 * **@labels**: labels of the individuals (rows of the matrices in `@dna`)
@@ -126,7 +135,7 @@ x
 ## @n.seq.miss: 0 gap-only (missing) sequence
 ## @labels: No305 No304 No306 No0906S No0908S No0909S...
 ## 
-## @dna:
+## @dna: (list of DNAbin matrices)
 ## $gene1
 ## 15 DNA sequences in binary format stored in a matrix.
 ## 
@@ -243,7 +252,7 @@ x
 ## @n.seq.miss: 8 gap-only (missing) sequences
 ## @labels: No305 No304 No306 No0906S No0908S No0909S...
 ## 
-## @dna:
+## @dna: (list of DNAbin matrices)
 ## $gene1
 ## 15 DNA sequences in binary format stored in a matrix.
 ## 
@@ -315,7 +324,7 @@ x
 ## @n.seq.miss: 8 gap-only (missing) sequences
 ## @labels: 2340_50156.ab1  2340_50149.ab1  2340_50674.ab1  2370_45312.ab1  2340_50406.ab1  2370_45424.ab1 ...
 ## 
-## @dna:
+## @dna: (list of DNAbin matrices)
 ## $patr_poat43
 ## 8 DNA sequences in binary format stored in a matrix.
 ## 
@@ -387,40 +396,13 @@ z
 ```
 
 ```
-## An object of class "multiphyDat"
-## Slot "dna":
-## $patr_poat43
-## 5 sequences with 764 character and 8 different site patterns.
-## The states are a c g t 
+## === multiphyDat ===
+## [ 0 DNA sequence in 0 gene ]
 ## 
-## $patr_poat47
-## 6 sequences with 626 character and 29 different site patterns.
-## The states are a c g t 
-## 
-## $patr_poat48
-## 8 sequences with 560 character and 24 different site patterns.
-## The states are a c g t 
-## 
-## $patr_poat49
-## 5 sequences with 556 character and 8 different site patterns.
-## The states are a c g t 
-## 
-## 
-## Slot "labels":
-## [1] "2340_50156.ab1 " "2340_50149.ab1 " "2340_50674.ab1 " "2370_45312.ab1 "
-## [5] "2340_50406.ab1 " "2370_45424.ab1 " "2370_45311.ab1 " "2370_45521.ab1 "
-## 
-## Slot "n.ind":
-## [1] 8
-## 
-## Slot "n.seq":
-## [1] 24
-## 
-## Slot "ind.info":
-## NULL
-## 
-## Slot "gene.info":
-## NULL
+## @n.ind: 0 individual
+## @n.seq: 0 sequence in total
+## @n.seq.miss: 0 gap-only (missing) sequence
+## @labels:
 ```
 
 
@@ -462,7 +444,7 @@ x
 ## @n.seq.miss: 8 gap-only (missing) sequences
 ## @labels: 2340_50156.ab1  2340_50149.ab1  2340_50674.ab1  2370_45312.ab1  2340_50406.ab1  2370_45424.ab1 ...
 ## 
-## @dna:
+## @dna: (list of DNAbin matrices)
 ## $patr_poat43
 ## 8 DNA sequences in binary format stored in a matrix.
 ## 
@@ -607,100 +589,9 @@ Here is an example using the `multiphyDat` object `z` created in the previous se
 ```r
 ## input object
 z
-```
-
-```
-## An object of class "multiphyDat"
-## Slot "dna":
-## $patr_poat43
-## 8 sequences with 764 character and 8 different site patterns.
-## The states are a c g t 
-## 
-## $patr_poat47
-## 8 sequences with 626 character and 29 different site patterns.
-## The states are a c g t 
-## 
-## $patr_poat48
-## 8 sequences with 560 character and 24 different site patterns.
-## The states are a c g t 
-## 
-## $patr_poat49
-## 8 sequences with 556 character and 8 different site patterns.
-## The states are a c g t 
-## 
-## 
-## Slot "labels":
-## [1] "2340_50156.ab1 " "2340_50149.ab1 " "2340_50674.ab1 " "2370_45312.ab1 "
-## [5] "2340_50406.ab1 " "2370_45424.ab1 " "2370_45311.ab1 " "2370_45521.ab1 "
-## 
-## Slot "n.ind":
-## [1] 8
-## 
-## Slot "n.seq":
-## [1] 32
-## 
-## Slot "ind.info":
-## NULL
-## 
-## Slot "gene.info":
-## NULL
-```
-
-```r
 ## build trees
 pp <- pmlPart(bf ~ edge + nni, z, control = pml.control(trace = 0))
-```
-
-```
-## Warning in pml(tree, x, ...): negative edges length changed to 0!
-```
-
-```
-## Warning in pml(tree, x, ...): negative edges length changed to 0!
-```
-
-```
-## Warning in pml(tree, x, ...): negative edges length changed to 0!
-```
-
-```
-## Warning in pml(tree, x, ...): negative edges length changed to 0!
-```
-
-```
-## [1] -3510
-## [1] -3510
-## [1] -3510
-## [1] -3510
-```
-
-```r
 pp
-```
-
-```
-## 
-## loglikelihood: -3510 
-## 
-## loglikelihood of partitions:
-##   -1021 -933.9 -788.8 -767 
-## AIC:  7131  BIC:  7451 
-## 
-## Proportion of invariant sites: 0 0 0 0 
-## 
-## Rates:
-## 1 1 1 1 
-## 
-## Base frequencies:  
-##        [,1]   [,2]   [,3]   [,4]
-## [1,] 0.2989 0.1888 0.1946 0.3177
-## 
-## Rate matrix:
-##      [,1] [,2] [,3] [,4] [,5] [,6]
-## [1,]    1    1    1    1    1    1
-```
-
-```r
 ## convert trees for plotting
 trees <- pmlPart2multiPhylo(pp)
 ```
@@ -708,7 +599,7 @@ trees <- pmlPart2multiPhylo(pp)
 ```r
 plot(trees, 4)
 ```
-![plot of chunk plotPmlPart](vignettes/figs/plotPmlPart-1.png) 
+
 
 
 Exporting data
@@ -721,6 +612,20 @@ This is illustrated below:
 
 ```r
 ## find source files in apex
+library(adegenet)
+```
+
+```
+## Loading required package: ade4
+## 
+##    /// adegenet 2.0.0 is loaded ////////////
+## 
+##    > overview: '?adegenet'
+##    > tutorials/doc/questions: 'adegenetWeb()' 
+##    > bug reports/feature resquests: adegenetIssues()
+```
+
+```r
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
 
 ## import data
@@ -737,7 +642,7 @@ x
 ## @n.seq.miss: 8 gap-only (missing) sequences
 ## @labels: 2340_50156.ab1  2340_50149.ab1  2340_50674.ab1  2370_45312.ab1  2340_50406.ab1  2370_45424.ab1 ...
 ## 
-## @dna:
+## @dna: (list of DNAbin matrices)
 ## $patr_poat43
 ## 8 DNA sequences in binary format stored in a matrix.
 ## 
@@ -790,41 +695,21 @@ obj1
 ```
 
 ```
+## /// GENIND OBJECT /////////
 ## 
-##    #####################
-##    ### Genind object ### 
-##    #####################
-## - genotypes of individuals - 
+##  // 8 individuals; 11 loci; 22 alleles; size: 10.1 Kb
 ## 
-## S4 class:  genind
-## @call: DNAbin2genind(x = concatenate(x, genes = genes))
+##  // Basic content
+##    @tab:  8 x 22 matrix of allele counts
+##    @loc.n.all: number of alleles per locus (range: 2-2)
+##    @loc.fac: locus factor for the 22 columns of @tab
+##    @all.names: list of allele names for each locus
+##    @ploidy: ploidy of each individual  (range: 1-1)
+##    @type:  codom
+##    @call: DNAbin2genind(x = concatenate(x, genes = genes))
 ## 
-## @tab:  8 x 22 matrix of genotypes
-## 
-## @ind.names: vector of  8 individual names
-## @loc.names: vector of  11 locus names
-## @loc.nall: number of alleles per locus
-## @loc.fac: locus factor for the  22 columns of @tab
-## @all.names: list of  11 components yielding allele names for each locus
-## @ploidy:  1 1 1 1 1 1
-## @type:  codom
-## 
-## Optional contents: 
-## @strata: - empty -
-## @hierarchy:  - empty -
-## @pop:  - empty -
-## @pop.names:  - empty -
-## 
-## @other: - empty -
-```
-
-```r
-obj2 <- multiphyDat2genind(x)
-identical(obj1, obj2)
-```
-
-```
-## [1] TRUE
+##  // Optional content
+##    - empty -
 ```
 
 The MLST option can be useful for a quick diagnostic of diversity amongst individuals.
@@ -836,37 +721,26 @@ obj3
 ```
 
 ```
+## /// GENIND OBJECT /////////
 ## 
-##    #####################
-##    ### Genind object ### 
-##    #####################
-## - genotypes of individuals - 
+##  // 8 individuals; 4 loci; 27 alleles; size: 26 Kb
 ## 
-## S4 class:  genind
-## @call: df2genind(X = xdfnum, ind.names = x@labels, ploidy = 1)
+##  // Basic content
+##    @tab:  8 x 27 matrix of allele counts
+##    @loc.n.all: number of alleles per locus (range: 6-8)
+##    @loc.fac: locus factor for the 27 columns of @tab
+##    @all.names: list of allele names for each locus
+##    @ploidy: ploidy of each individual  (range: 1-1)
+##    @type:  codom
+##    @call: df2genind(X = xdfnum, ind.names = x@labels, ploidy = 1)
 ## 
-## @tab:  8 x 27 matrix of genotypes
-## 
-## @ind.names: vector of  8 individual names
-## @loc.names: vector of  4 locus names
-## @loc.nall: number of alleles per locus
-## @loc.fac: locus factor for the  27 columns of @tab
-## @all.names: list of  4 components yielding allele names for each locus
-## @ploidy:  1 1 1 1 1 1
-## @type:  codom
-## 
-## Optional contents: 
-## @strata: - empty -
-## @hierarchy:  - empty -
-## @pop:  - empty -
-## @pop.names:  - empty -
-## 
-## @other: - empty -
+##  // Optional content
+##    - empty -
 ```
 
 ```r
 ## alleles of the first locus (=sequences)
-obj3@all.names[[1]]
+alleles(obj3)[[1]]
 ```
 
 ```
