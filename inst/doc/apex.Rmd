@@ -4,9 +4,9 @@ author: "Thibaut Jombart"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-%\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{apex: Phylogenetic Methods for Multiple Gene Data.}
- \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{apex: Phylogenetic Methods for Multiple Gene Data.}
+  \usepackage[utf8]{inputenc}
 ---
 
 
@@ -18,8 +18,8 @@ options(digits = 4)
 
 *apex*: Phylogenetic Methods for Multiple Gene Data
 =================================================
-*apex* implements some new classes to handle DNA sequences from different genes and individuals.
-It implements new classes extending object classes from *ape* and *phangorn* to store multiple gene data, and some useful wrappers mimicking existing functionalities for multiple genes.
+*apex* implements new classes and methods for analysing DNA sequences from multiple genes.
+It implements new classes extending object classes from *ape* and *phangorn* to store multiple gene data, and some useful wrappers mimicking existing functionalities of these packages for multiple genes.
 This document provides an overview of the package's content.
 
 
@@ -41,73 +41,9 @@ Then, to load the package, use:
 library("apex")
 ```
 
-
-New object classes
-------------------
-Two new classes of object extend existing data structure for multiple genes:
-* **multidna:** based on *ape*'s `DNAbin` class
-* **multiphyDat:** based on *phangorn*'s `phyDat` class
-
-###  multidna
-This formal (S4) class can be seen as a multi-gene extension of *ape*'s `DNAbin` class.
-Data is stored as a list of DNAbin objects, with additional slots for extra information.
-The class definition can be obtained by:
-```r
-getClassDef("multidna")
-```
-* **@dna**: list of `DNAbin` matrices, with matching rows
-* **@labels**: labels of the individuals (rows of the matrices in `dna`)
-* **@n.ind**: the number of individuals
-* **@n.seq**: the total number of sequences in the dataset
-* **@ind.info**: an optional dataset storing individual metadata 
-* **@gene.info**: an optional dataset storing gene metadata 
-
-Any of these slots can be accessed using `@` (see example below).
-
-New `multidna` objects can be created via two ways:
-
-1. using the constructor `new("multidna", ...)`
-2. reading data from files (see section on 'importing data' below)
-
-We illustrate the use of the constructor below (see `?new.multidna`) for more information.
-We use *ape*'s dataset *woodmouse*, which we artificially split in two 'genes', keeping the first 500 nucleotides for the first gene, and using the rest as second gene. Note that the individuals need not match across different genes: matching is handled by the constructor.
-
-```{r class}
-## empty object
-new("multidna")
-
-## using a list of genes as input
-data(woodmouse)
-genes <- list(gene1=woodmouse[,1:500], gene2=woodmouse[,501:965])
-x <- new("multidna", genes)
-x
-
-## access the various slots
-x@labels
-x@n.ind
-class(x@dna) # this is a list
-names(x@dna) # names of the genes
-x@dna[[1]] # first gene
-x@dna[[2]] # second gene
-
-## compare the input dataset and the new multidna
-par(mfrow=c(3,1), mar=c(6,6,2,1))
-image(woodmouse)
-image(x@dna[[1]])
-image(x@dna[[2]])
-
-## same but with missing sequences and wrong order
-genes <- list(gene1=woodmouse[,1:500], gene2=woodmouse[c(5:1,14:15),501:965])
-x <- new("multidna", genes)
-x
-par(mar=c(6,6,2,1))
-plot(x)
-```
-
-
-
 Importing data
 --------------
+### *ape* wrappers
 Two simple functions permit to import data from multiple alignements into `multidna` objects:
 * **read.multidna:** reads multiple DNA alignments with various formats
 * **read.multiFASTA:** same for FASTA files
@@ -128,7 +64,8 @@ par(mar=c(6,11,2,1))
 plot(x)
 ```
 
-Additionally:
+### *phangorn* wrappers
+In addition to the above functions for importing data:
 * **read.multiphyDat:** reads multiple DNA alignments with various formats.
 The arguments are the same as the single-gene `read.phyDat` in *phangorn*:
 ```{r readfiles phyDat}
@@ -136,12 +73,123 @@ z <- read.multiphyDat(files, format="fasta")
 z
 ```
 
+New object classes
+------------------
+Two new classes of object extend existing data structures for multiple genes:
+* **multidna:** based on *ape*'s `DNAbin` class, useful for distance-based trees.
+* **multiphyDat:** based on *phangorn*'s `phyDat` class, useful for likelihood-based and parsimony trees.
+Conversion between these classes can be done using `multidna2multiPhydat` and `multiPhydat2multidna`.
+
+###  multidna
+This formal (S4) class can be seen as a multi-gene extension of *ape*'s `DNAbin` class.
+Data is stored as a list of `DNAbin` objects, with additional slots for extra information.
+The class definition can be obtained by:
+```{r multidnaDef}
+getClassDef("multidna")
+```
+* **@dna**: list of `DNAbin` matrices, each corresponding to a given gene/locus, with matching rows (individuals)
+* **@labels**: labels of the individuals (rows of the matrices in `@dna`)
+* **@n.ind**: the number of individuals
+* **@n.seq**: the total number of sequences in the dataset, including gaps-only sequences
+* **@n.seq.miss**: the total number of gaps-only (i.e., missing) sequences in the dataset
+* **@ind.info**: an optional dataset storing individual metadata
+* **@gene.info**: an optional dataset storing gene metadata
+
+Any of these slots can be accessed using `@`, however accessor functions are available for most and are preferred (see examples below).
+
+New `multidna` objects can be created via different ways:
+
+1. using the constructor `new("multidna", ...)`
+2. reading data from files (see section on 'importing data' below)
+3. converting a `multiphyDat` object using `multidna2multiphyDat`
+
+We illustrate the use of the constructor below (see `?new.multidna`) for more information.
+We use *ape*'s dataset *woodmouse*, which we artificially split in two 'genes', keeping the first 500 nucleotides for the first gene, and using the rest as second gene. Note that the individuals need not match across different genes: matching is handled by the constructor.
+
+```{r multidnaclass}
+## empty object
+new("multidna")
+
+## using a list of genes as input
+data(woodmouse)
+woodmouse
+genes <- list(gene1=woodmouse[,1:500], gene2=woodmouse[,501:965])
+x <- new("multidna", genes)
+x
+
+## access the various slots
+getNumInd(x) # The number of individuals
+getNumLoci(x) # The number of loci
+getLocusNames(x) # The names of the loci
+getSequenceNames(x) # A list of the names of the sequences at each locus
+
+getSequences(x) # A list of all loci
+getSequences(x, loci = 2, simplify = FALSE) # Just the second locus (a single element list)
+getSequences(x, loci = "gene1") # Just the first locus as a DNAbin object
+
+## compare the input dataset and the new multidna
+par(mfrow=c(3,1), mar=c(6,6,2,1))
+image(woodmouse)
+image(as.matrix(getSequences(x, 1)))
+image(as.matrix(getSequences(x, 2)))
+
+## same but with missing sequences and wrong order
+genes <- list(gene1=woodmouse[,1:500], gene2=woodmouse[c(5:1,14:15),501:965])
+x <- new("multidna", genes)
+x
+par(mar=c(6,6,2,1))
+plot(x)
+```
+
+
+###  multiphyDat
+Like `multidna` and *ape*'s `DNAbin`, the formal (S4) class `multiphyDat` is a multi-gene extension of *phangorn*'s `phyDat` class.
+Data is stored as a list of `phyDat` objects, with additional slots for extra information.
+The class definition can be obtained by:
+```{r multiphyDatDef}
+getClassDef("multiphyDat")
+```
+* **@seq**: list of `phyDat` objects, each corresponding to a given gene/locus, with matching rows (individuals); unlike `multidna` which is retrained to DNA sequences, this class can store any characters, including amino-acid sequences 
+* **@type**: a character string indicating the type of sequences stored
+* **@labels**: labels of the individuals (rows of the matrices in `@dna`)
+* **@n.ind**: the number of individuals
+* **@n.seq**: the total number of sequences in the dataset, including gaps-only sequences
+* **@n.seq.miss**: the total number of gaps-only (i.e., missing) sequences in the dataset
+* **@ind.info**: an optional dataset storing individual metadata
+* **@gene.info**: an optional dataset storing gene metadata
+
+Any of these slots can be accessed using `@` (see example below).
+
+As for `multidna`, `multiphyDat` objects can be created via different ways:
+
+1. using the constructor `new("multiphyDat", ...)`
+2. reading data from files (see section on 'importing data' below)
+3. converting a `multidna` object using `multiphyDat2multidna`
+
+As before, we illustrate the use of the constructor below (see `?new.multiphyDat`) for more information.
+```{r multiphyDatclass}
+data(Laurasiatherian)
+Laurasiatherian
+
+## empty object
+new("multiphyDat")
+
+## simple conversion after artificially splitting data into 2 genes
+genes <- list(gene1=subset(Laurasiatherian,,1:1600, FALSE),
+      	 gene2=subset(Laurasiatherian,,1601:3179, FALSE))
+x <- new("multiphyDat", genes, type="DNA")
+x
+```
+
 
 Handling data
 --------------
 Several functions facilitate data handling:
-* **concatenate:** concatenate several genes into a single DNAbin or phyDat matrix
+* **concatenate:** concatenate several genes into a single `DNAbin` or `phyDat` matrix
 * **x[i,j]:** subset x by individuals (i) and/or genes (j)
+* **multidna2multiphyDat:** converts from `multidna` to `multiphyDat`
+* **multiphyDat2multidna:** converts from `multiphyDat` to `multidna`
+
 
 Example code:
 ```{r handling}
@@ -175,7 +223,8 @@ plot(tree, "u")
 
 Building trees
 ---------------
-One can build neighbor joining trees from for each gene or pooled genes for multidna objects
+### Distance-based trees
+Distance-based trees (e.g. Neighbor Joining) can be obtained for each gene in a `multidna` object using `getTree`
 ```{r gettree}
 ## make trees, default parameters
 trees <- getTree(x)
@@ -185,8 +234,10 @@ trees
 plot(trees, 4, type="unrooted")
 ```
 ```{r plotMultiPhylo, echo=FALSE,eval=TRUE}
-par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]])
+par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]], type="unr")
 ```
+
+As an alternative, all genes can be pooled into a single alignment to obtain a single tree using:
 ```{r plotPhyloSingle, echo=FALSE,eval=TRUE}
 ## make one single tree based on concatenated genes
 tree <- getTree(x, pool=TRUE)
@@ -195,37 +246,54 @@ par(mfrow=c(1,1))
 plot(tree, type="unrooted")
 ```
 
-or can uses functions from `phangorn` to estimate with maximum likelihood models
-```{r pmlPart}
+### Likelihood-based trees
+It is also possible to use functions from `phangorn` to estimate with maximum likelihood trees.
+Here is an example using the `multiphyDat` object `z` created in the previous section:
+```{r pmlPart, eval=FALSE}
+## input object
+z
+## build trees
 pp <- pmlPart(bf ~ edge + nni, z, control = pml.control(trace = 0))
 pp
+## convert trees for plotting
 trees <- pmlPart2multiPhylo(pp)
 ```
 ```{r hidePlotMultiPhylo2, echo=TRUE,eval=FALSE}
 plot(trees, 4)
 ```
-```{r plotPmlPart, echo=FALSE,eval=TRUE}
+```{r plotPmlPart, echo=FALSE,eval=FALSE}
 par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]])
 ```
+
 
 Exporting data
 ---------------
 The following functions enable the export from *apex* to other packages:
-* **multidna2genind:** concatenates genes and export to genind
+* **multidna2genind:** concatenates genes and export SNPs into a `genind` object; alternatively, Multi-Locus Sequence Type (MLST) can be used to treat genes as separate locus and unique sequences as alleles.
 * **multiphyDat2genind:** does the same for multiphyDat object
+
 This is illustrated below:
 ```{r export}
 ## find source files in apex
+library(adegenet)
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
 
 ## import data
 x <- read.multiFASTA(files)
 x
 
-## export to genind
+## extract SNPs and export to genind
 obj1 <- multidna2genind(x)
 obj1
 
-obj2 <- multiphyDat2genind(x)
-identical(obj1, obj2)
+```
+
+The MLST option can be useful for a quick diagnostic of diversity amongst individuals.
+While it is best suited to clonal organisms, we illustrate this procedure using our toy dataset:
+```{r mlst}
+obj3 <- multidna2genind(x, mlst=TRUE)
+obj3
+
+## alleles of the first locus (=sequences)
+alleles(obj3)[[1]]
 ```

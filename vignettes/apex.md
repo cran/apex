@@ -1,7 +1,13 @@
-[![Travis-CI Build Status](https://travis-ci.org/thibautjombart/apex.png?branch=master)](https://travis-ci.org/thibautjombart/apex)
-[![DOI](https://zenodo.org/badge/11430/thibautjombart/apex.svg)](http://dx.doi.org/10.5281/zenodo.16822)
-
-
+---
+title: "Phylogenetic Methods for Multiple Gene Data"
+author: "Thibaut Jombart"
+date: "2016-03-28"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{apex: Phylogenetic Methods for Multiple Gene Data.}
+  \usepackage[utf8]{inputenc}
+---
 
 
 
@@ -144,7 +150,7 @@ par(mar=c(6,11,2,1))
 plot(x)
 ```
 
-![plot of chunk readfiles](vignettes/figs/readfiles-1.png)
+![plot of chunk readfiles](figs/readfiles-1.png)
 
 ### *phangorn* wrappers
 In addition to the above functions for importing data:
@@ -231,6 +237,7 @@ New `multidna` objects can be created via different ways:
 
 We illustrate the use of the constructor below (see `?new.multidna`) for more information.
 We use *ape*'s dataset *woodmouse*, which we artificially split in two 'genes', keeping the first 500 nucleotides for the first gene, and using the rest as second gene. Note that the individuals need not match across different genes: matching is handled by the constructor.
+
 
 ```r
 ## empty object
@@ -414,7 +421,7 @@ image(as.matrix(getSequences(x, 1)))
 image(as.matrix(getSequences(x, 2)))
 ```
 
-![plot of chunk multidnaclass](vignettes/figs/multidnaclass-1.png)
+![plot of chunk multidnaclass](figs/multidnaclass-1.png)
 
 ```r
 ## same but with missing sequences and wrong order
@@ -461,7 +468,7 @@ par(mar=c(6,6,2,1))
 plot(x)
 ```
 
-![plot of chunk multidnaclass](vignettes/figs/multidnaclass-2.png)
+![plot of chunk multidnaclass](figs/multidnaclass-2.png)
 
 
 ###  multiphyDat
@@ -649,14 +656,15 @@ par(mar=c(6,11,2,1))
 plot(x)
 ```
 
-![plot of chunk handling](vignettes/figs/handling-1.png)
+![plot of chunk handling](figs/handling-1.png)
 
 ```r
 ## subset
 plot(x[1:3,2:4])
 ```
 
-![plot of chunk handling](vignettes/figs/handling-2.png)
+![plot of chunk handling](figs/handling-2.png)
+
 
 ```r
 ## concatenate
@@ -681,7 +689,7 @@ par(mar=c(5,8,2,1))
 image(y)
 ```
 
-![plot of chunk concat](vignettes/figs/concat-1.png)
+![plot of chunk concat](figs/concat-1.png)
 
 ```r
 ## concatenate multiphyDat object
@@ -700,7 +708,7 @@ tree <- pratchet(u, trace=0)
 plot(tree, "u")
 ```
 
-![plot of chunk concat](vignettes/figs/concat-2.png)
+![plot of chunk concat](figs/concat-2.png)
 
 Building trees
 ---------------
@@ -720,7 +728,7 @@ trees
 ```r
 plot(trees, 4, type="unrooted")
 ```
-![plot of chunk plotMultiPhylo](vignettes/figs/plotMultiPhylo-1.png)
+![plot of chunk plotMultiPhylo](figs/plotMultiPhylo-1.png)
 
 As an alternative, all genes can be pooled into a single alignment to obtain a single tree using:
 
@@ -734,7 +742,7 @@ As an alternative, all genes can be pooled into a single alignment to obtain a s
 ## Unrooted; includes branch lengths.
 ```
 
-![plot of chunk plotPhyloSingle](vignettes/figs/plotPhyloSingle-1.png)
+![plot of chunk plotPhyloSingle](figs/plotPhyloSingle-1.png)
 
 ### Likelihood-based trees
 It is also possible to use functions from `phangorn` to estimate with maximum likelihood trees.
@@ -908,4 +916,3 @@ alleles(obj3)[[1]]
 ## [5] "--tacactttgataacaaaaaaatactaatgtaagatgtggttatatttcttgtggctttttatctgatatattgtcttaatgcactatcatactttgatctgaaaagggtctgtgatggaaacctaccacctcttcagttatgcattaaaattacccattataccatcattttgttatataactgaaaagttaattgtgactttgcaattctggattgctctttctcttgtaaactctttggctttcagaagtcatattaataattttatccttgtttgtgacaaataaatgcatatttaatcttcatgtttaaataatgtgctcttgtaacgtgccaaacaaaaggtgatgaatggtaggggcattttcagtctctcttttagatttccttgtgatgtcagtaaacagaaggagaatttagtctcmgtccctagggatgtcttaccattgtaatggaattaagagagctgataaaatgaataattcatgatgtagtatttgttgacaaaacttcttaaaagtccactacagaccagtgaacgtgtggttaggaagtagcaatcattgttccacctcatttttgttgttgtttttccctccattgaactgttgttattaatcataaaataatgaataactgtccttctgtgtcctcccctctaacaaaatataatttaggagggattgtgtagtaaaaccaaacaaaccaaagaagaaacataagraaagcacaatatatttctcattgaacagagggattt-"
 ## [6] "--tacactttgataacaaaaaaatactaatgtaagatgtggttatatttcttgtggctttttatctgatatattgtcttaatgcactatcatactttgatctgaaaagggtctgtgatggaaacctaccacctcttcagttatgcattaaaattacccattataccatcattttgttatataactgaaaagttaatygtgactttgcaattctggattgctctttctcttgtaaactctttggctttcagaagtcatattaataattttatccttgtttgtgacaaataaatgcatatttaatcttcatgtttaaataatgtgctcttgtaacgtgccaaacaaaaggtgatgaatggtaggggcattttcagtctctcttttagatttccttgtgatgtcagtaaacagaaggagaatttagtctcagtccctagggatgtcttaccattgtaatggaattaagagagctgataaaatgaataattcatgatgtagtatttgttgacaaaacttcttaaaagtccactacagaccagtgaacgtgtggttaggaagtagcaatcattgttccacctcatttttgttgttgtttttccctccattgaactgttgttattaatcataaaataatgaataactgtccttctgtgtcctcccctctaacaaaatataatttaggagggattgtgtagtaaaaccaaacaaaccaaagaagaaacataagaaaagcacaatatatttctcattgaacagagggattt-"
 ```
-
