@@ -52,15 +52,14 @@ x <- new("multiphyDat", genes)
 x
 
 }
-\author{
-Klaus Schliep \email{klaus.schliep@gmail.com}
-
-Thibaut Jombart \email{t.jombart@imperial.ac.uk}
-}
 \seealso{
 \itemize{
 \item the \linkS4class{multiphyDat} class
 \item \code{\link{read.multiphyDat}}
 }
 }
+\author{
+Klaus Schliep \email{klaus.schliep@gmail.com}
 
+Thibaut Jombart \email{t.jombart@imperial.ac.uk}
+}

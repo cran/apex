@@ -1,7 +1,7 @@
 Package: apex
 Title: Phylogenetic Methods for Multiple Gene Data
-Version: 1.0.2
-Authors@R: c(TJ=person("Thibaut", "Jombart", , "t.jombart@imperial.ac.uk", role = c("aut", "cre")),
+Version: 1.0.3
+Authors@R: c(TJ=person("Thibaut", "Jombart", , "thibautjombart@gmail.com", role = c("aut", "cre")),
 	   ZK=person("Zhian Namir", "Kamvar", email = "kamvarz@science.oregonstate.edu", role = c("aut")),
 	   KS=person("Klaus", "Schliep", email="klaus.schliep@umb.edu", role = c("aut")),
 	   EA=person("Eric", "Archer", email="eric.archer@noaa.gov", role = c("aut")),
@@ -21,14 +21,14 @@ Collate: doc.R internal.R multidna.class.R multiphyDat.class.R
         plot.R readfiles.R datasets.R dist.R getTree.R exports.R
 VignetteBuilder: knitr
 Suggests: testthat, knitr, rmarkdown
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: no
-Packaged: 2016-03-28 18:28:58 UTC; thibaut
+Packaged: 2017-09-20 10:19:35 UTC; thibaut
 Author: Thibaut Jombart [aut, cre],
   Zhian Namir Kamvar [aut],
   Klaus Schliep [aut],
   Eric Archer [aut],
   Rebecca Harris [aut]
-Maintainer: Thibaut Jombart <t.jombart@imperial.ac.uk>
+Maintainer: Thibaut Jombart <thibautjombart@gmail.com>
 Repository: CRAN
-Date/Publication: 2016-03-31 17:50:47
+Date/Publication: 2017-09-23 14:19:41 UTC

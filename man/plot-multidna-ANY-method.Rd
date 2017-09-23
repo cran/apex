@@ -36,4 +36,3 @@ Thibaut Jombart \email{t.jombart@imperial.ac.uk}
 
 Thibaut Jombart \email{t.jombart@imperial.ac.uk}
 }
-

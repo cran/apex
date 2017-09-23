@@ -46,4 +46,3 @@ plot(x[c(2,4,6),2])
 \author{
 Thibaut Jombart \email{t.jombart@imperial.ac.uk}
 }
-

@@ -44,10 +44,9 @@ for(i in 1:2) plot(ltrees[[i]], main=names(ltrees)[i])
 plot(tree, main="Pooled distances")
 
 }
-\author{
-Thibaut Jombart \email{t.jombart@imperial.ac.uk}
-}
 \seealso{
 \code{\link[ape]{dist.dna}}
 }
-
+\author{
+Thibaut Jombart \email{t.jombart@imperial.ac.uk}
+}

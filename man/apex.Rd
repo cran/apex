@@ -8,4 +8,3 @@
 \description{
 Toolkit for the analysis of multiple gene data. Apex implements the new S4 classes multidna, multiphyDat and associated methods to handle aligned DNA sequences from multiple genes.
 }
-
