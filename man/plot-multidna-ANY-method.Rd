@@ -4,6 +4,7 @@
 \name{plot,multidna,ANY-method}
 \alias{plot,multidna,ANY-method}
 \alias{plot,multidna-method}
+\alias{plot.multidna}
 \title{Display multidna objects}
 \usage{
 \S4method{plot}{multidna,ANY}(x, y, rows = TRUE, ask = FALSE, ...)

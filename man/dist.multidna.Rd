@@ -39,9 +39,11 @@ D <- dist.multidna(x, pool=TRUE)
 ltrees <- lapply(lD, nj)
 tree <- nj(D)
 
+opar <- par(no.readonly=TRUE)
 par(mfrow=c(3,1))
 for(i in 1:2) plot(ltrees[[i]], main=names(ltrees)[i])
 plot(tree, main="Pooled distances")
+par(opar)
 
 }
 \seealso{

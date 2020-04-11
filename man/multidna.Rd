@@ -4,6 +4,8 @@
 \name{multidna-class}
 \alias{multidna-class}
 \alias{multidna}
+\alias{listOrNULL}
+\alias{data.frameOrNULL}
 \title{multidna: class for multiple gene data}
 \description{
 This formal (S4) class is used to store multiple DNA alignments.

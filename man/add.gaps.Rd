@@ -3,6 +3,9 @@
 \docType{methods}
 \name{add.gaps}
 \alias{add.gaps}
+\alias{add.gaps.generic}
+\alias{add.gaps.multidna}
+\alias{add.gaps.multiphyDat}
 \alias{add.gaps,multidna-method}
 \alias{add.gaps,multiphyDat-method}
 \title{Add gap-only sequences for missing data}

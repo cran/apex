@@ -13,8 +13,6 @@
 #'
 #' @author Thibaut Jombart \email{t.jombart@@imperial.ac.uk}, Zhian N. Kamvar, Klaus Schliep
 #'
-#' @rdname multidna2genind
-#'
 #' @aliases multidna2genind
 #' @aliases multiphyDat2genind
 #'
@@ -49,7 +47,7 @@ multidna2genind <- function(x, genes=TRUE, mlst=FALSE, gapIsNA=FALSE){
     return(DNAbin2genind(concatenate(x, genes=genes)))
   }
   xlist  <- lapply(x@dna, function(i) apply(as.character(i), 1, paste, collapse = ""))
-  xdf    <- data.frame(xlist)
+  xdf    <- data.frame(xlist, stringsAsFactors=TRUE)
   xlevs  <- lapply(xdf, levels)
   if (gapIsNA){
     xgap <- find_gap_sequence(xlevs)
@@ -61,7 +59,7 @@ multidna2genind <- function(x, genes=TRUE, mlst=FALSE, gapIsNA=FALSE){
       }
     }
   }
-  xdfnum <- data.frame(lapply(xdf, as.numeric))
+  xdfnum <- data.frame(lapply(xdf, as.numeric), stringsAsFactors=TRUE)
   xgid   <- df2genind(xdfnum, ploidy = 1, ind.names = x@labels)
   names(xlevs)   <- names(xgid@all.names)
   xgid@all.names <- xlevs
@@ -120,8 +118,6 @@ multiphyDat2genind <- function(x, genes=TRUE, mlst=FALSE, gapIsNA=FALSE){
 #'
 #' ## check round trip
 #' identical(x, multiphyDat2multidna(y))
-#'
-#' @rdname multidna2multiphyDat
 #'
 #' @export
 #'

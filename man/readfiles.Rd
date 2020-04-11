@@ -31,7 +31,10 @@ files
 ## read files
 x <- read.multiFASTA(files)
 x
-plot(x)
+opar <- par(no.readonly=TRUE)
+par(mfrow=c(2,2))
+plot(x, row=FALSE)
+par(opar)
 
 y <- read.multiphyDat(files, format="fasta")
 y

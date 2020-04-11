@@ -3,6 +3,9 @@
 \docType{methods}
 \name{concatenate}
 \alias{concatenate}
+\alias{concatenate.generic}
+\alias{concatenate.multidna}
+\alias{concatenate.multiphyDat}
 \alias{concatenate,multidna-method}
 \alias{concatenate,multiphyDat-method}
 \title{Concatenate genes into a single matrix}

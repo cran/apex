@@ -1,19 +1,19 @@
-## ----setup, echo=FALSE---------------------------------------------------
+## ----setup, echo=FALSE--------------------------------------------------------
 # set global chunk options: images will be 7x5 inches
 knitr::opts_chunk$set(fig.width=7, fig.height=10, fig.path="figs/")
 options(digits = 4)
 
-## ----install, eval=FALSE-------------------------------------------------
+## ----install, eval=FALSE------------------------------------------------------
 #  library(devtools)
 #  install_github("thibautjombart/apex")
 
-## ----install2, eval=FALSE------------------------------------------------
+## ----install2, eval=FALSE-----------------------------------------------------
 #  install.packages("apex")
 
-## ----load----------------------------------------------------------------
+## ----load---------------------------------------------------------------------
 library("apex")
 
-## ----readfiles-----------------------------------------------------------
+## ----readfiles----------------------------------------------------------------
 ## get address of the file within apex
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
 files # this will change on your computer
@@ -25,14 +25,14 @@ names(x@dna) # names of the genes
 par(mar=c(6,11,2,1))
 plot(x)
 
-## ----readfiles phyDat----------------------------------------------------
+## ----readfiles phyDat---------------------------------------------------------
 z <- read.multiphyDat(files, format="fasta")
 z
 
-## ----multidnaDef---------------------------------------------------------
+## ----multidnaDef--------------------------------------------------------------
 getClassDef("multidna")
 
-## ----multidnaclass-------------------------------------------------------
+## ----multidnaclass------------------------------------------------------------
 ## empty object
 new("multidna")
 
@@ -66,10 +66,10 @@ x
 par(mar=c(6,6,2,1))
 plot(x)
 
-## ----multiphyDatDef------------------------------------------------------
+## ----multiphyDatDef-----------------------------------------------------------
 getClassDef("multiphyDat")
 
-## ----multiphyDatclass----------------------------------------------------
+## ----multiphyDatclass---------------------------------------------------------
 data(Laurasiatherian)
 Laurasiatherian
 
@@ -82,7 +82,7 @@ genes <- list(gene1=subset(Laurasiatherian,,1:1600, FALSE),
 x <- new("multiphyDat", genes, type="DNA")
 x
 
-## ----handling------------------------------------------------------------
+## ----handling-----------------------------------------------------------------
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
 files
 
@@ -95,7 +95,7 @@ plot(x)
 ## subset
 plot(x[1:3,2:4])
 
-## ----concat, fig.width=12, fig.height=7----------------------------------
+## ----concat, fig.width=12, fig.height=7---------------------------------------
 ## concatenate
 y <- concatenate(x)
 y
@@ -109,25 +109,25 @@ u
 tree <- pratchet(u, trace=0)
 plot(tree, "u")
 
-## ----gettree-------------------------------------------------------------
+## ----gettree------------------------------------------------------------------
 ## make trees, default parameters
 trees <- getTree(x)
 trees
 
-## ----hidePlotMultiPhylo, echo=TRUE,eval=FALSE----------------------------
+## ----hidePlotMultiPhylo, echo=TRUE,eval=FALSE---------------------------------
 #  plot(trees, 4, type="unrooted")
 
-## ----plotMultiPhylo, echo=FALSE,eval=TRUE--------------------------------
+## ----plotMultiPhylo, echo=FALSE,eval=TRUE-------------------------------------
 par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]], type="unr")
 
-## ----plotPhyloSingle, echo=FALSE,eval=TRUE-------------------------------
+## ----plotPhyloSingle, echo=FALSE,eval=TRUE------------------------------------
 ## make one single tree based on concatenated genes
 tree <- getTree(x, pool=TRUE)
 tree
 par(mfrow=c(1,1))
 plot(tree, type="unrooted")
 
-## ----pmlPart, eval=FALSE-------------------------------------------------
+## ----pmlPart, eval=FALSE------------------------------------------------------
 #  ## input object
 #  z
 #  ## build trees
@@ -136,13 +136,13 @@ plot(tree, type="unrooted")
 #  ## convert trees for plotting
 #  trees <- pmlPart2multiPhylo(pp)
 
-## ----hidePlotMultiPhylo2, echo=TRUE,eval=FALSE---------------------------
+## ----hidePlotMultiPhylo2, echo=TRUE,eval=FALSE--------------------------------
 #  plot(trees, 4)
 
-## ----plotPmlPart, echo=FALSE,eval=FALSE----------------------------------
+## ----plotPmlPart, echo=FALSE,eval=FALSE---------------------------------------
 #  par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]])
 
-## ----export--------------------------------------------------------------
+## ----export-------------------------------------------------------------------
 ## find source files in apex
 library(adegenet)
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
@@ -156,7 +156,7 @@ obj1 <- multidna2genind(x)
 obj1
 
 
-## ----mlst----------------------------------------------------------------
+## ----mlst---------------------------------------------------------------------
 obj3 <- multidna2genind(x, mlst=TRUE)
 obj3
 
