@@ -1,3 +1,13 @@
+---
+title: "Phylogenetic Methods for Multiple Gene Data"
+author: "Thibaut Jombart"
+date: "2024-01-29"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{apex: Phylogenetic Methods for Multiple Gene Data.}
+  \usepackage[utf8]{inputenc}
+---
 
 
 
@@ -150,7 +160,7 @@ oldpar <-par(mar=c(6,11,4,1))
 plot(x)
 ```
 
-![plot of chunk readfiles](vignettes/figs/readfiles-1.png)
+![plot of chunk readfiles](figs/readfiles-1.png)
 
 ```r
 par(oldpar)
@@ -479,7 +489,7 @@ image(as.matrix(getSequences(x, 1)))
 image(as.matrix(getSequences(x, 2)))
 ```
 
-![plot of chunk multidnaclass](vignettes/figs/multidnaclass-1.png)
+![plot of chunk multidnaclass](figs/multidnaclass-1.png)
 
 ```r
 par(oldpar)
@@ -543,7 +553,7 @@ oldpar <- par(mar=c(6,6,2,1))
 plot(x)
 ```
 
-![plot of chunk multidnaclass](vignettes/figs/multidnaclass-2.png)
+![plot of chunk multidnaclass](figs/multidnaclass-2.png)
 
 ```r
 par(oldpar)
@@ -756,14 +766,14 @@ oldpar <- par(mar=c(6,11,4,1))
 plot(x)
 ```
 
-![plot of chunk handling](vignettes/figs/handling-1.png)
+![plot of chunk handling](figs/handling-1.png)
 
 ```r
 ## subset
 plot(x[1:3,2:4])
 ```
 
-![plot of chunk handling](vignettes/figs/handling-2.png)
+![plot of chunk handling](figs/handling-2.png)
 
 ```r
 par(oldpar)
@@ -801,7 +811,7 @@ oldpar <- par(mar=c(5,8,4,1))
 image(y)
 ```
 
-![plot of chunk concat](vignettes/figs/concat-1.png)
+![plot of chunk concat](figs/concat-1.png)
 
 ```r
 par(oldpar)
@@ -823,7 +833,7 @@ oldpar <- par(mar=c(1,1,1,1))
 plot(tree, "u")
 ```
 
-![plot of chunk concat](vignettes/figs/concat-2.png)
+![plot of chunk concat](figs/concat-2.png)
 
 ```r
 par(oldpar)
@@ -847,7 +857,7 @@ trees
 ```r
 plot(trees, 4, type="unrooted")
 ```
-![plot of chunk plotMultiPhylo](vignettes/figs/plotMultiPhylo-1.png)
+![plot of chunk plotMultiPhylo](figs/plotMultiPhylo-1.png)
 
 As an alternative, all genes can be pooled into a single alignment to obtain a single tree using:
 
@@ -861,7 +871,7 @@ As an alternative, all genes can be pooled into a single alignment to obtain a s
 ## Unrooted; includes branch lengths.
 ```
 
-![plot of chunk plotPhyloSingle](vignettes/figs/plotPhyloSingle-1.png)
+![plot of chunk plotPhyloSingle](figs/plotPhyloSingle-1.png)
 
 ### Likelihood-based trees
 It is also possible to use functions from `phangorn` to estimate with maximum likelihood trees.
@@ -1051,4 +1061,5 @@ alleles(obj3)[[1]]
 ## [5] "--tacactttgataacaaaaaaatactaatgtaagatgtggttatatttcttgtggctttttatctgatatattgtcttaatgcactatcatactttgatctgaaaagggtctgtgatggaaacctaccacctcttcagttatgcattaaaattacccattataccatcattttgttatataactgaaaagttaattgtgactttgcaattctggattgctctttctcttgtaaactctttggctttcagaagtcatattaataattttatccttgtttgtgacaaataaatgcatatttaatcttcatgtttaaataatgtgctcttgtaacgtgccaaacaaaaggtgatgaatggtaggggcattttcagtctctcttttagatttccttgtgatgtcagtaaacagaaggagaatttagtctcmgtccctagggatgtcttaccattgtaatggaattaagagagctgataaaatgaataattcatgatgtagtatttgttgacaaaacttcttaaaagtccactacagaccagtgaacgtgtggttaggaagtagcaatcattgttccacctcatttttgttgttgtttttccctccattgaactgttgttattaatcataaaataatgaataactgtccttctgtgtcctcccctctaacaaaatataatttaggagggattgtgtagtaaaaccaaacaaaccaaagaagaaacataagraaagcacaatatatttctcattgaacagagggattt-"
 ## [6] "--tacactttgataacaaaaaaatactaatgtaagatgtggttatatttcttgtggctttttatctgatatattgtcttaatgcactatcatactttgatctgaaaagggtctgtgatggaaacctaccacctcttcagttatgcattaaaattacccattataccatcattttgttatataactgaaaagttaatygtgactttgcaattctggattgctctttctcttgtaaactctttggctttcagaagtcatattaataattttatccttgtttgtgacaaataaatgcatatttaatcttcatgtttaaataatgtgctcttgtaacgtgccaaacaaaaggtgatgaatggtaggggcattttcagtctctcttttagatttccttgtgatgtcagtaaacagaaggagaatttagtctcagtccctagggatgtcttaccattgtaatggaattaagagagctgataaaatgaataattcatgatgtagtatttgttgacaaaacttcttaaaagtccactacagaccagtgaacgtgtggttaggaagtagcaatcattgttccacctcatttttgttgttgtttttccctccattgaactgttgttattaatcataaaataatgaataactgtccttctgtgtcctcccctctaacaaaatataatttaggagggattgtgtagtaaaaccaaacaaaccaaagaagaaacataagaaaagcacaatatatttctcattgaacagagggattt-"
 ```
+
 

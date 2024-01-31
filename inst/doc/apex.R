@@ -1,7 +1,7 @@
 ## ----setup, echo=FALSE--------------------------------------------------------
 # set global chunk options: images will be 7x5 inches
 knitr::opts_chunk$set(fig.width=7, fig.height=10, fig.path="figs/")
-options(digits = 4)
+old <- options(digits = 4)
 
 ## ----install, eval=FALSE------------------------------------------------------
 #  library(devtools)
@@ -16,14 +16,14 @@ library("apex")
 ## ----readfiles----------------------------------------------------------------
 ## get address of the file within apex
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
-files # this will change on your computer
 
 ## read these files
 x <- read.multiFASTA(files)
 x
 names(x@dna) # names of the genes
-par(mar=c(6,11,2,1))
+oldpar <-par(mar=c(6,11,4,1))
 plot(x)
+par(oldpar)
 
 ## ----readfiles phyDat---------------------------------------------------------
 z <- read.multiphyDat(files, format="fasta")
@@ -54,17 +54,18 @@ getSequences(x, loci = 2, simplify = FALSE) # Just the second locus (a single el
 getSequences(x, loci = "gene1") # Just the first locus as a DNAbin object
 
 ## compare the input dataset and the new multidna
-par(mfrow=c(3,1), mar=c(6,6,2,1))
+oldpar <- par(mfrow=c(3,1), mar=c(6,6,2,1))
 image(woodmouse)
 image(as.matrix(getSequences(x, 1)))
 image(as.matrix(getSequences(x, 2)))
-
+par(oldpar)
 ## same but with missing sequences and wrong order
 genes <- list(gene1=woodmouse[,1:500], gene2=woodmouse[c(5:1,14:15),501:965])
 x <- new("multidna", genes)
 x
-par(mar=c(6,6,2,1))
+oldpar <- par(mar=c(6,6,2,1))
 plot(x)
+par(oldpar)
 
 ## ----multiphyDatDef-----------------------------------------------------------
 getClassDef("multiphyDat")
@@ -77,37 +78,40 @@ Laurasiatherian
 new("multiphyDat")
 
 ## simple conversion after artificially splitting data into 2 genes
-genes <- list(gene1=subset(Laurasiatherian,,1:1600, FALSE),
-      	 gene2=subset(Laurasiatherian,,1601:3179, FALSE))
+genes <- list(gene1=Laurasiatherian[,1:1600], gene2=Laurasiatherian[,1601:3179])
 x <- new("multiphyDat", genes, type="DNA")
 x
 
 ## ----handling-----------------------------------------------------------------
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
-files
 
 ## read files
 x <- read.multiFASTA(files)
 x
-par(mar=c(6,11,2,1))
+oldpar <- par(mar=c(6,11,4,1))
 plot(x)
 
 ## subset
 plot(x[1:3,2:4])
+par(oldpar)
 
 ## ----concat, fig.width=12, fig.height=7---------------------------------------
 ## concatenate
 y <- concatenate(x)
 y
-par(mar=c(5,8,2,1))
+oldpar <- par(mar=c(5,8,4,1))
 image(y)
+par(oldpar)
 
 ## concatenate multiphyDat object
 z <- multidna2multiphyDat(x)
 u <- concatenate(z)
 u
-tree <- pratchet(u, trace=0)
+
+tree <- pratchet(u, trace=0, all = FALSE)
+oldpar <- par(mar=c(1,1,1,1))
 plot(tree, "u")
+par(oldpar)
 
 ## ----gettree------------------------------------------------------------------
 ## make trees, default parameters
@@ -118,13 +122,14 @@ trees
 #  plot(trees, 4, type="unrooted")
 
 ## ----plotMultiPhylo, echo=FALSE,eval=TRUE-------------------------------------
-par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]], type="unr")
+oldpar <- par(mfrow=c(2,2)) 
+for(i in 1:length(trees))plot(trees[[i]], type="unr")
+par(oldpar)
 
 ## ----plotPhyloSingle, echo=FALSE,eval=TRUE------------------------------------
 ## make one single tree based on concatenated genes
 tree <- getTree(x, pool=TRUE)
 tree
-par(mfrow=c(1,1))
 plot(tree, type="unrooted")
 
 ## ----pmlPart, eval=FALSE------------------------------------------------------
@@ -162,4 +167,7 @@ obj3
 
 ## alleles of the first locus (=sequences)
 alleles(obj3)[[1]]
+
+## ----reset defaults, echo=FALSE-----------------------------------------------
+options(old)
 
