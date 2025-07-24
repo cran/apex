@@ -54,6 +54,7 @@ Here is an example using a dataset from *apex*:
 ```{r readfiles}
 ## get address of the file within apex
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
+files # this will change on your computer
 
 ## read these files
 x <- read.multiFASTA(files)
@@ -176,7 +177,8 @@ Laurasiatherian
 new("multiphyDat")
 
 ## simple conversion after artificially splitting data into 2 genes
-genes <- list(gene1=Laurasiatherian[,1:1600], gene2=Laurasiatherian[,1601:3179])
+genes <- list(gene1=subset(Laurasiatherian,,1:1600, FALSE),
+      	 gene2=subset(Laurasiatherian,,1601:3179, FALSE))
 x <- new("multiphyDat", genes, type="DNA")
 x
 ```
@@ -194,6 +196,7 @@ Several functions facilitate data handling:
 Example code:
 ```{r handling}
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
+files
 
 ## read files
 x <- read.multiFASTA(files)

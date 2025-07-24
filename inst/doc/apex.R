@@ -4,11 +4,11 @@ knitr::opts_chunk$set(fig.width=7, fig.height=10, fig.path="figs/")
 old <- options(digits = 4)
 
 ## ----install, eval=FALSE------------------------------------------------------
-#  library(devtools)
-#  install_github("thibautjombart/apex")
+# library(devtools)
+# install_github("thibautjombart/apex")
 
 ## ----install2, eval=FALSE-----------------------------------------------------
-#  install.packages("apex")
+# install.packages("apex")
 
 ## ----load---------------------------------------------------------------------
 library("apex")
@@ -16,6 +16,7 @@ library("apex")
 ## ----readfiles----------------------------------------------------------------
 ## get address of the file within apex
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
+files # this will change on your computer
 
 ## read these files
 x <- read.multiFASTA(files)
@@ -78,12 +79,14 @@ Laurasiatherian
 new("multiphyDat")
 
 ## simple conversion after artificially splitting data into 2 genes
-genes <- list(gene1=Laurasiatherian[,1:1600], gene2=Laurasiatherian[,1601:3179])
+genes <- list(gene1=subset(Laurasiatherian,,1:1600, FALSE),
+      	 gene2=subset(Laurasiatherian,,1601:3179, FALSE))
 x <- new("multiphyDat", genes, type="DNA")
 x
 
 ## ----handling-----------------------------------------------------------------
 files <- dir(system.file(package="apex"),patter="patr", full=TRUE)
+files
 
 ## read files
 x <- read.multiFASTA(files)
@@ -119,7 +122,7 @@ trees <- getTree(x)
 trees
 
 ## ----hidePlotMultiPhylo, echo=TRUE,eval=FALSE---------------------------------
-#  plot(trees, 4, type="unrooted")
+# plot(trees, 4, type="unrooted")
 
 ## ----plotMultiPhylo, echo=FALSE,eval=TRUE-------------------------------------
 oldpar <- par(mfrow=c(2,2)) 
@@ -133,19 +136,19 @@ tree
 plot(tree, type="unrooted")
 
 ## ----pmlPart, eval=FALSE------------------------------------------------------
-#  ## input object
-#  z
-#  ## build trees
-#  pp <- pmlPart(bf ~ edge + nni, z, control = pml.control(trace = 0))
-#  pp
-#  ## convert trees for plotting
-#  trees <- pmlPart2multiPhylo(pp)
+# ## input object
+# z
+# ## build trees
+# pp <- pmlPart(bf ~ edge + nni, z, control = pml.control(trace = 0))
+# pp
+# ## convert trees for plotting
+# trees <- pmlPart2multiPhylo(pp)
 
 ## ----hidePlotMultiPhylo2, echo=TRUE,eval=FALSE--------------------------------
-#  plot(trees, 4)
+# plot(trees, 4)
 
 ## ----plotPmlPart, echo=FALSE,eval=FALSE---------------------------------------
-#  par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]])
+# par(mfrow=c(2,2)); for(i in 1:length(trees))plot(trees[[i]])
 
 ## ----export-------------------------------------------------------------------
 ## find source files in apex

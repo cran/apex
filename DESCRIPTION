@@ -1,6 +1,6 @@
 Package: apex
 Title: Phylogenetic Methods for Multiple Gene Data
-Version: 1.0.6
+Version: 1.0.7
 Authors@R: c(KS=person("Klaus", "Schliep", email="klaus.schliep@gmail.com", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2941-0161")),
        TJ=person("Thibaut", "Jombart", , "t.jombart@imperial.ac.uk", role = c("aut")),
 	   ZK=person("Zhian Namir", "Kamvar", email = "kamvarz@science.oregonstate.edu", role = c("aut")),
@@ -20,14 +20,15 @@ Collate: doc.R internal.R multidna.class.R multiphyDat.class.R
 VignetteBuilder: knitr
 Suggests: testthat, knitr, rmarkdown
 Encoding: UTF-8
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2024-01-29 15:32:08 UTC; klaus
-Author: Klaus Schliep [aut, cre] (<https://orcid.org/0000-0003-2941-0161>),
+Packaged: 2025-07-24 11:58:32 UTC; klaus
+Author: Klaus Schliep [aut, cre] (ORCID:
+    <https://orcid.org/0000-0003-2941-0161>),
   Thibaut Jombart [aut],
   Zhian Namir Kamvar [aut],
   Eric Archer [aut],
   Rebecca Harris [aut]
 Maintainer: Klaus Schliep <klaus.schliep@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-01-31 19:40:07 UTC
+Date/Publication: 2025-07-24 14:10:02 UTC
